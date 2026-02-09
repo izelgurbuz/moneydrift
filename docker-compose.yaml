@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16
+    container_name: moneydrift_db
+    environment:
+      POSTGRES_DB: moneydrift
+      POSTGRES_USER: moneydrift
+      POSTGRES_PASSWORD: moneydrift_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - moneydrift_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moneydrift -d moneydrift"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: moneydrift_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  moneydrift_pgdata:
